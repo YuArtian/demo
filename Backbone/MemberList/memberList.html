@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>member list</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <button id="btn">点击增加新成员</button>
+    <ul id="memberList">
+
+    </ul>
+</body>
+<script src="http://the5fireblog.b0.upaiyun.com/staticfile/jquery-1.10.2.js"></script>
+<script src="http://the5fireblog.b0.upaiyun.com/staticfile/underscore.js"></script>
+<script src="http://the5fireblog.b0.upaiyun.com/staticfile/backbone.js"></script>
+<script>
+    (function($) {
+        Member = Backbone.Model.extend({
+            name: '',
+            age: 0
+        })
+        Members = Backbone.Collection.extend({
+            initialize: function(models, options) {
+                this.bind('add', options.view.addNewMember)
+            }
+        })
+        AppView = Backbone.View.extend({
+            el: $('body'),
+            events: {
+                'click #btn': 'showAddInt'
+            },
+            initialize: function() {
+                this.members = new Members(null, {
+                    view: this
+                })
+            },
+            showAddInt: function() {
+                var newMemberName = prompt('请输入名称')
+                var newMemberAge = prompt('请输入年龄')
+                if (newMemberName == 0) {
+                    newMemberName = '未知'
+                }
+                if (newMemberAge == 0) {
+                    newMemberAge = '未知'
+                }
+                var member = new Member({
+                    name: newMemberName,
+                    age: newMemberAge
+                })
+                this.members.add(member)
+            },
+            addNewMember: function(model) {
+                $('#memberList').append('<li>成员姓名:<b>' + model.get('name') + '</b><br/>成员年龄:<b>' + model.get('age') + '</b></li>')
+            }
+        })
+        var appView = new AppView
+    })(jQuery)
+</script>
+
+</html>
