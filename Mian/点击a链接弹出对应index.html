@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head>
+	<title></title>
+</head>
+<body>
+
+<div>
+	<a href="###">点击弹出对应index</a>
+	<a href="###">点击弹出对应index</a>
+	<a href="###">点击弹出对应index</a>
+	<a href="###">点击弹出对应index</a>
+	<a href="###">点击弹出对应index</a>
+	<a href="###">点击弹出对应index</a>
+	<a href="###">点击弹出对应index</a>
+</div>
+</body>
+<style type="text/css">
+	a {
+		display: block;
+		height: 50px;
+	}
+	div {
+		background-color: #e2e2e2;
+	}
+
+</style>
+<script type="text/javascript">
+	var a = document.getElementsByTagName('a')
+	var div = document.getElementsByTagName('div')
+
+	div[0].onclick = function(e){
+		console.log('click div',e.currentTarget)
+		if(e.target && e.target.nodeName === 'A'){
+			console.log('target',e.target)
+			for (var i = a.length - 1; i >= 0; i--) {
+				if(a[i] == e.target){
+					console.log(i)
+				}
+			}
+		}
+	}
+
+</script>
+</html>
