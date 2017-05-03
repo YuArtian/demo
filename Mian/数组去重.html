@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+
+</body>
+<script type="text/javascript">
+	var arr = [1,null,null,1,2,3,4,4,null,null,undefined,'',{}]
+	/*正则匹配 , 没法判断特殊类型*/
+	function unique1 (arr) {
+		var tmp = arr.slice('').sort().join('')
+		var key = ''
+		var times = 0
+		var reg = /(\w)+1/g
+		tmp.replace(reg , function ($0,$1) {
+			if (times < $0.length) {
+				times = $0.length
+			}
+			key = $1
+		})
+		return {
+			key: key,
+			times: times
+		}
+	}
+	console.log('unique1',unique1(arr))
+	/*优化*/
+	function unique2 (arr) {
+		var res = []
+		var json = {}
+		for(var i=0; i<arr.length; i++){
+			if (!json[arr[i]]) {
+				res.push(arr[i])
+				json[arr[i]] = 1
+			}
+		}
+		return res
+	}
+	console.log('unique2',unique2(arr))
+	/*ES6 indexOf*/
+	function unique3 (arr) {
+		var res = []
+		arr.forEach(function(v){
+			if (res.indexOf(v) < 0) {
+				res.push(v)
+			}
+		})
+		return res
+	}
+	console.log('unique3',unique3(arr))
+</script>
+</html>

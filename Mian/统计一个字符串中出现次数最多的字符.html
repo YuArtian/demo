@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+
+</body>
+<script type="text/javascript">
+	var str = 'qweqqqqqweqweqqqqqqwescdfghh'
+	function countStr (str) {
+		var tmp = str.split('').sort().join('')
+		var reg = /(\w)\1+/g
+		var times = 0
+		var key = ''
+		tmp.replace(reg , function ($0,$1) {
+			console.log('arguments',arguments)
+			if (times < $0.length) {
+				times = $0.length
+				key = $1
+			}
+		})
+		return {
+			key: key,
+			times: times
+		}
+	}
+	console.log('length',countStr(str))
+</script>
+</html>

@@ -18,6 +18,10 @@
 </div>
 </body>
 <script type="text/javascript">
-	
+	var div = document.getElementsByTagName('div')[0]
+	console.log('all text',div.textContent)
+	var allText = div.textContent.replace(/\s+/g,'').replace(/[\r\n]/g,'')
+	console.log('allText',allText)
+	console.log('allText',allText.length)
 </script>
 </html>

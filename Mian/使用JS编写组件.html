@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+
+</body>
+<script type="text/javascript">
+  (function () {    //无名函数作启动函数  
+  
+    APP_DEMO.namespace("Module.droplist");  
+  
+    var self,  //指向组件，代替this  
+        // Class Names  
+        C = {  
+            buttonBar: "ui-bcgogo-droplist-buttonBar",  
+        },  
+  
+        // Templates  
+        T = {  
+            confirmBar: "<div class='ui-bcgogo-droplist-delete-confirmBar'>"  
+                + "    <div class='J-button-ok'></div>"  
+                + "    <div class='J-button-cancel'></div>"  
+                + "</div>",  
+          };  
+  
+    /** 
+    *  在无名函数中定义组件 
+    */  
+    APP_DEMO.Module.droplist = {  
+        _$root:null,      //这里定义了root，init赋值window.document.body, 用于计算组件的位置  
+        _$target: null,   //指向组件  
+        _data: [],        //保存用户加载的数据  
+        _params: null,    //保存用户初始化的params  
+        _uuid: "",        //设置uuid解决一个页面，对一个页面多个地方绑定组件，请求后台的数据能找到组件  
+        _state: "idle",  // editing, idle。给组件一个状态属性，控制某种状态下拥有的操作权限  
+        DEFAULT_HEIGHT: 250,  
+  
+        setUUID: function (value) {  
+            self._uuid = value;  
+        },  
+  
+        _addOptionEventListener: function () {  
+            //这里绑定的处理方法拿出去。好处 1.代码看起来简洁，好维护 2.可以复用  
+              $("." + C.option, self._$target).bind("mouseleave", self._onOptionMouseLeave);    
+          },  
+  
+         /** 
+           @description draw view by data   
+         *      data format: 
+         *        [ 
+         *           {"type":"", "label":""}, 
+         *           {"type":"", "label":""}, 
+         *                ... 
+         *        ] 
+         * @param data 
+         */  
+        draw: function (data) {  //后台加载的数据 draw函数出来  
+              
+             if (!data.hasOwnProperty("uuid")  
+                || data["uuid"] != self._uuid  //判断后台返回数据uuid和组件uuid一致  
+                || !data["data"]) {      //既然有draw函数，data不能为空           
+                return;  
+            }  
+  
+            self._initEvents();  
+  
+        },  
+        init: function () {  //js中组件加载时调用的初始化,或者start等组件的启动函数  
+            // create hook  
+            if (!self._$target || !self._$target[0]) {  
+                self._$target = $("<div id='bcgogo-droplist-" + G.generateUUID() + "' class='" + C.droplistContainer + "'></div>");  
+                self._$root = $(window.document.body);  
+                self._$target.appendTo(self._$root);  
+            }  
+        },  
+        _show: function () {  
+            $(self._$target).show();   
+        },  
+  
+        hide: function () {   //组件内开放hide函数，做其他逻辑时用到  
+            self._visible = false;  
+            $(self._$target).hide();  
+            $.fn.tooltip.clearTip();  
+        },  
+  
+        _onDeleteBefore: function (event) {  
+          self._showDeleteConfirmBar();     //self 指向自己  
+        },  
+        //show作为用户的初始化入口  
+        show: function (p) {  
+            if(p.data.uuid !== self._uuid) return;    
+  
+             self._params = p;     //保存用户初始化的params  
+             //1.对于组件开放的可选的接口函数定义.也可定义私有方法onSave,在方法里判断   
+              // 2.注意此句的写法  
+             self.onSave = p["onSave"] || self.onDefaultSave;     
+               
+  
+             self.draw(p.data || {});   //将show()中data调用draw做初始化  
+         },  
+  
+        // ==== callbacks ====  
+        onDefaultSave: function (event, index, data, hook) {  
+            G.debug("onSave the : " + $(event.currentTarget).text() + "// and index is : " + index + "// and data is : " + data);  
+        },  
+    };  
+    self = APP_DEMO.Module.droplist;  
+  })();  
+  
+$(function () {  
+    var self = APP_DEMO.Module.droplist;  
+    self.init();  
+  
+});  
+</script>
+</html>
