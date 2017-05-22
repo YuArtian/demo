@@ -4,16 +4,19 @@ var webpack = require('webpack')
 module.exports = {
   entry: {
     main: [
-      
       './src/entry/index.js'
     ]
   },
   output: {
     path: path.join(__dirname,'build'),
-    filename: '[name].js'
+    publicPath: '/build/',
+    filename: 'bundle.js'
   },
   resolve: {
     extensions: ['.js', '.jsx']
+  },
+  devServer:{
+    inline:true
   },
   module: {
     loaders: [
@@ -23,7 +26,7 @@ module.exports = {
         exclude: /node.modules/,
         include: __dirname,
         query: {
-          presets: ['es2015', 'react']
+          presets: ['es2015', 'react', 'stage-0']
         }
       },
       {

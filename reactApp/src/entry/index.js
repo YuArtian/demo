@@ -1,9 +1,11 @@
 import 'babel-polyfill'
 import React from 'react'
-import ReactDOM  from 'react-dom'
-import Root from '../containers/Root.js'
+import {render}  from 'react-dom'
+import Root from '../containers/Root'
+import configureStore from '../store'
 
-ReactDOM.render(
-  <Root />,
+const store = configureStore()
+render(
+  <Root store={store} />,
   document.getElementById('root')
 )
