@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vuex@3.3.0/dist/vuex.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <div>app</div>
+    <div>{{this.$store.state.a}}</div>
+    <button @click="clickAddA">clickAddA</button>
+    <!-- <demo-one/> -->
+  </div>
+  <div id="app-2">
+    <div>app-2</div>
+    <div>{{this.$store.state.a}}</div>
+    <button @click="clickAddA">clickAddA</button>
+  </div>
+  <script>
+    const store = new Vuex.Store({
+      state: {
+        a: 111
+      },
+      mutations: {
+        addA(state, payload){
+          state.a += payload
+        }
+      },
+    })
+    console.log('store',store)
+    const store2 = new Vuex.Store({
+      state: {
+        b: 222
+      }
+    })
+
+    Vue.component('demo-one', {
+      template: `<div id="demo-one">demo</div>`
+    })
+
+    const vm_1 = new Vue({
+      el: '#app',
+      store,
+      methods: {
+        clickAddA(){
+          this.$store.commit('addA', 1)
+          this.$store.commit('addA', 1)
+        }
+      },
+      updated(){
+        console.log('updated')
+      }
+    })
+    const vm_2 = new Vue({
+      el: '#app-2',
+      store,
+      methods: {
+        clickAddA(){
+          this.$store.commit('addA', 10)
+        }
+      }
+    })
+
+  </script>
+</body>
+</html>

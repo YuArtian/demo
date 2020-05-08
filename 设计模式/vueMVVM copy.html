@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <main>
+    <p>请输入:</p>
+    <input type="text" id="input">
+    <p id="p"></p>
+  </main>
+</body>
+<!-- <script>
+  const Vue = (function(){
+    class
+    class Vue{
+      constructor(){
+
+      }
+      $watch(){
+
+      }
+    }
+    return Vue
+  })()
+  const input = document.getElementById('input')
+  const p = document.getElementById('p')
+
+  const app = new Vue({
+    text: ''
+  })
+
+  input.addEventListener('oninput', function(e){
+    app.text = e.target.value
+  })
+  app.$watch('text',function(str){
+    p.innerHTML = str
+  })
+
+</script> -->
+<script>
+  const Vue = (function(){
+    let uid = 0
+
+    class Dep {
+      constructor(){
+        this.id = uid++
+        this.subs = []
+      }
+      addSub(sub){
+        this.subs.push(sub)
+      }
+      depend(){
+        Dep.target.addDep(this)
+      }
+      notify(){
+        this.subs.forEach(sub => sub.update())
+      }
+    }
+    Dep.target = null
+
+    class Watcher {
+      constructor(vm, expOrFn, cb){
+        this.depIds = {}
+        this.vm = vm
+        this.expOrFn = expOrFn
+        this.cb = cb
+        this.val = this.get()
+      }
+      update(){
+        this.run()
+      }
+      run(){
+        const val = this.get()
+        if (val !== this.val) {
+          this.val = val
+          this.cb.call(this.vm, val)
+        }
+      }
+      get(){
+        Dep.target = this
+        const val = this.vm._data[this.expOrFn]
+        Dep.target = null
+        return val
+      }
+      addDep(dep){
+        if (!this.depIds.hasOwnProperty(dep.id)) {
+          dep.addSub(this)
+          this.depIds[dep.id] = dep
+        }
+      }
+    }
+
+    class Observer {
+      constructor(value){
+        this.value = value
+        this.walk(value)
+      }
+      walk(value){
+        Object.keys(value).forEach(key => this.convert(key, value[key]))
+      }
+      convert(key, val){
+        defineReactive(this.value, key, val)
+      }
+    }
+
+    function defineReactive(obj, key, val){
+      const dep = new Dep()
+      let childrenObj = observe(val)
+      Object.defineProperty(obj, key, {
+        configurable: true,
+        enumerable: true,
+        get: function(){
+          if(Dep.target){
+            dep.depend()
+          }
+          return val
+        },
+        set: function(newVal){
+          if(val === newVal) return
+          val = newVal
+          childrenObj = observe(val)
+          dep.notify()
+        }
+      })
+    }
+
+    function observe(value){
+      if (!value || typeof value !== 'object') {
+        return
+      }
+      return new Observer(value)
+    }
+
+    class Vue {
+      constructor(options){
+        this.$options = options
+        let data = (this._data = this.$options.data)
+        Object.keys(data).forEach(key => this._proxy(key))
+        observe(data)
+      }
+
+      _proxy(key){
+        Object.defineProperty(this, key, {
+          configurable: true,
+          enumerable: true,
+          get: function(){
+            return this._data[key]
+          },
+          set: function(val){
+            this._data[key] = val
+          }
+        })
+      }
+
+      $watch(expOrFn, cb){
+        new Watcher(this, expOrFn, cb)
+      }
+    }
+
+    return Vue
+  })()
+
+  const app = new Vue({
+    data: {
+      text: ''
+    }
+  })
+
+  const input = document.getElementById('input');
+  const p = document.getElementById('p')
+
+
+  input.addEventListener('input', function (e) {
+    app.text = e.target.value;
+  })
+  app.$watch('text', function(str){
+    p.innerHTML = str
+  })
+
+</script>
+
+</html>
