@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button id="button_throttle">点击节流</button>
+  <button id="button_debounce">点击防抖</button>
+  <script>
+    function clickTest (e) {
+      console.log('validate event',e);
+      console.log('this',this);
+      console.log('change !', new Date);
+    }
+    // 节流 throttle
+
+    const throttle = (fn, during=1000, {tarilling, leading}) => {
+      let pre = 0, context, args, timeout
+      let later = function () {
+        pre = leading === false ? 0 : Date.now()
+        fn.apply(context, args)
+      }
+      let throttled = function () {
+        context = this
+        args = arguments
+        let now = Date.now()
+        if (!pre && leading === false) {
+          pre = now
+        }
+        if (now - pre > during) {
+          if (timeout) {
+            clearTimeout(timeout)
+            timeout = null
+          }
+          fn.apply(context, args)
+          pre = now
+        } else if (!timeout && tarilling !== false) {
+          timeout = setTimeout(later, during)
+        }
+      }
+      return throttled
+    }
+
+    const validate_throttle = throttle(clickTest, 3000, {tarilling: true, leading: true})
+    document.querySelector('#button_throttle').addEventListener('click', validate_throttle)
+  </script>
+  <script>
+    function debounce (fn, during, immediate) {
+      let timeout
+      return function(){
+        clearTimeout(timeout)
+        if (immediate && !timeout) {
+          fn.apply(this, arguments)
+        }
+        timeout = setTimeout(() => {
+          fn.apply(this, arguments)
+          timeout = null
+        }, during)
+      }
+    }
+    const validate_debounce = debounce(clickTest, 3000, true)
+    document.querySelector('#button_debounce').addEventListener('click', validate_debounce)
+  </script>
+</body>
+</html>

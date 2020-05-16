@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- <script>
+    let b = 'b'
+    var someOne = { a: 1 };
+    Object.defineProperty(someOne, "name", {
+        value:"coverguo" , //由于设定了writable属性为false 导致这个量不可以修改
+        writable: false
+    });
+    Object.defineProperty(someOne, "a", {
+      // writable: true,
+      configurable: true,
+      get(){
+        return b
+      },
+      set(newValue){
+        b = newValue
+      }
+    });
+
+    console.log(someOne.a); // 输出 coverguo
+    someOne.a = "linkzhu";
+
+    console.log(someOne.a); // 输出coverguo
+    delete someOne.a
+    console.log(someOne.a)
+    console.log('getOwnPropertyDescriptors',Object.getOwnPropertyDescriptors(someOne))
+  </script> -->
+  <script>
+    const data = { a: 'a', b: {c: 'c'}, d: [1,2,{e: 'e'}]}
+    let wid = 0
+    class Watcher {
+      constructor(expOrFn){
+        this.getter = expOrFn
+      }
+      get(){
+        pushTarget(this)
+        this.getter()
+        popTarget(this)
+      }
+    }
+    let did = 0
+    let stack = []
+    class Dep {
+      constructor(){}
+
+    }
+    function pushTarget(watcher){
+      Dep.target = watcher
+      stack.push(watcher)
+    }
+    function popTarget(){
+      stack.pop()
+      Dep.target = stack[stack.length-1]
+    }
+
+    function isObject(obj){
+      return typeof obj === 'object' && obj !== null
+    }
+
+    let oldProto = Array.prototype;
+    let proto = Object.create(oldProto);
+    ['pop','push','shift', 'unshift', 'splice', 'sort', 'reverse'].forEach(method => {
+      proto[method] = function(...args){
+        let result = oldProto[method].apply(this, args)
+        let inserted
+        switch (method) {
+          case 'push':
+          case 'unshift':
+            inserted = args
+            break;
+          case 'splice':
+            inserted = args.slice(2)
+            break;
+        }
+        if(inserted) observe(inserted)
+        updateView()
+        return result
+      }
+    })
+
+    function observe(target){
+      if(!isObject(target)) return target
+      if(Array.isArray(target)) {
+        Object.setPrototypeOf(target, proto)
+      }
+      for(const key in target) {
+        if(target.hasOwnProperty(key)){
+          defineReactive(target, key, target[key])
+        }
+      }
+    }
+
+    function defineReactive(target, key, value){
+      observe(value)
+      Object.defineProperty(target, key, {
+        configurable: true,
+        enumerable: true,
+        get(){
+          return value
+        },
+        set(newValue){
+          console.log('set')
+          observe(newValue)
+          updateView()
+          value = newValue
+        }
+      })
+    }
+
+    function updateView () {
+      console.log('触发更新')
+    }
+
+    observe(data)
+
+    data.a = 'update a' //触发更新
+    data.b.c = 'update b.c'
+    data.b.x = 'x'
+    data.d.push('new')
+    console.log('data.d',data.d)
+    data.d[2].e = 'update e'
+
+  </script>
+
+</body>
+</html>

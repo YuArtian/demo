@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    function is (x, y) {
+      if (x === y) {
+        // +0 -0
+        return x !== 0 || y !== 0 || 1/x === 1/y
+      } else {
+        // NaN
+        return x !== x && y !== y
+      }
+    }
+
+    function shallEqual (objA, objB) {
+      if(is(objA, objB)) return true
+
+      if (typeof objA !== 'object' || objA === null || typeof objB !== 'object' || objB === null) {
+        return false
+      }
+      const objAKeys = Object.keys(objA)
+      const objBKeys = Object.keys(objB)
+      if (objAKeys.length !== objBKeys.length) {
+        return false
+      }
+      for(let i = 0; i< objAKeys.length;i++){
+        Object.hasOwnProperty(objA)
+      }
+    }
+
+    console.log('shallEqual({}, {})',shallEqual({}, {a: 1}))
+
+
+  </script>
+</body>
+</html>

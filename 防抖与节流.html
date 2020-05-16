@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button id="button_throttle">点击节流</button>
+  <button id="button_debounce">点击防抖</button>
+  <script>
+    function clickTest (e) {
+      console.log('validate event',e);
+      console.log('this',this);
+      console.log('change !', new Date);
+    }
+    // 节流 throttle
+
+    const throttle = (fn, during=1000, {tarilling, leading}) => {
+      let previous = 0, timeout, context, args
+      let later = function () {
+        previous = leading === false ? 0 : Date.now()
+        fn.apply(context, args)
+        context = args = null
+      }
+      let throttled = function () {
+        let now = Date.now()
+        args = arguments
+        context = this
+        if (!previous && leading === false) {
+          previous = now
+        }
+        let remaining = during - (now - previous)
+        if (remaining <= 0) {
+          if (timeout) {
+            clearTimeout(timeout)
+            timeout = null
+          }
+          fn.apply(context, args)
+          previous = now
+          context = args = null
+        } else if (!timeout && tarilling !== false) {
+          timeout = setTimeout(later, during)
+        }
+      }
+      return throttled
+    }
+
+    const validate_throttle = throttle(clickTest, 1000, {tarilling: true, leading: false})
+    document.querySelector('#button_throttle').addEventListener('click', validate_throttle)
+  </script>
+  <script>
+    function debounce (fn, during, immediate) {
+      let timeout
+      return function(){
+        clearTimeout(timeout)
+        if (immediate && !timeout) {
+          fn.apply(this, arguments)
+        }
+        timeout = setTimeout(() => {
+          fn.apply(this, arguments)
+          timeout = null
+        }, during)
+      }
+    }
+    const validate_debounce = debounce(clickTest, 3000, true)
+    document.querySelector('#button_debounce').addEventListener('click', validate_debounce)
+  </script>
+</body>
+</html>
