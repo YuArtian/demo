@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- <script>
+    function Parent (name){
+      this.name=name
+      this.age = 1
+    }
+
+    Parent.prototype.getName = function () {
+      console.log('name',this.name)
+      return this.name
+    }
+    Parent.prototype.getAge = function () {
+      console.log('parent age',this.age)
+      return this.age
+    }
+
+    function Child(name, age){
+      Parent.call(this, name)
+      this.age = age
+    }
+    Child.prototype = Object.create(Parent.prototype)
+    Child.prototype.constructor = Child
+
+    Child.prototype.getAge = function () {
+      console.log('child age',this.age)
+    }
+
+    let p = new Parent('parent')
+    p.getAge()
+    let c = new Child('child', 100)
+    c.getAge()
+  </script> -->
+
+  <script>
+    class Parent {
+      constructor(name){
+        this.name = name
+        this.age = 1
+        this.height = 20
+      }
+      getAge(){
+        console.log('parent age', this.age)
+      }
+      getName(){
+        console.log('name',this.name)
+      }
+      static staticMethod (caller) {
+        console.log(caller,'static method')
+      }
+    }
+
+    class Child extends Parent {
+      constructor(name, age) {
+        super(name)
+        this.age = age
+      }
+      getAge(){
+        console.log('child age',this.age)
+      }
+    }
+
+    let p = new Parent('parent name')
+    p.getName()
+    p.getAge()
+    // p.getHeight() Uncaught TypeError: p.getHeight is not a function
+    Parent.staticMethod('parent')
+    let c = new Child('child name', 100)
+    c.getName()
+    c.getAge()
+    Child.staticMethod('child')
+  </script>
+
+
+</body>
+</html>

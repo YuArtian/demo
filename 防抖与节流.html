@@ -38,7 +38,6 @@
           }
           fn.apply(context, args)
           previous = now
-          context = args = null
         } else if (!timeout && tarilling !== false) {
           timeout = setTimeout(later, during)
         }
@@ -46,7 +45,7 @@
       return throttled
     }
 
-    const validate_throttle = throttle(clickTest, 1000, {tarilling: true, leading: false})
+    const validate_throttle = throttle(clickTest, 3000, {tarilling: false, leading: false})
     document.querySelector('#button_throttle').addEventListener('click', validate_throttle)
   </script>
   <script>
