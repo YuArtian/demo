@@ -38,7 +38,7 @@
     c.getAge()
   </script> -->
 
-  <script>
+  <!-- <script>
     class Parent {
       constructor(name){
         this.name = name
@@ -75,8 +75,26 @@
     c.getName()
     c.getAge()
     Child.staticMethod('child')
-  </script>
+  </script> -->
 
+
+  <script>
+    //test
+    class Parent {
+      constructor(){
+        console.log('Parent constructor',this)
+      }
+    }
+    class Child extends Parent{
+      constructor(){
+        super()
+        console.log('this',this)
+      }
+    }
+
+    let c = new Child()
+    console.log('c',c)
+  </script>
 
 </body>
 </html>

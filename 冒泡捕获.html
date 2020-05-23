@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="s1">
+    <div id="s2">
+      <div id="s3"></div>
+    </div>
+  </div>
+  <style>
+    #s1 {
+      height: 300px;
+      background-color:red;
+    }
+    #s2 {
+      height: 150px;
+      background-color: green;
+    }
+    #s3 {
+      height: 75px;
+      background-color: blue;
+    }
+  </style>
+  <script>
+    let s1 = document.querySelector('#s1')
+    let s2 = document.querySelector('#s2')
+    let s3 = document.querySelector('#s3')
+    s1.addEventListener('click', function(){
+      console.log('s1 捕获')
+    }, true)
+    s1.addEventListener('click', function(){
+      console.log('s1 冒泡')
+    }, false)
+    s2.addEventListener('click', function(){
+      console.log('s2 冒泡')
+    }, false)
+    s2.addEventListener('click', function(){
+      console.log('s2 捕获')
+    }, true)
+    s3.addEventListener('click', function(){
+      console.log('s3 冒泡')
+    }, false)
+    s3.addEventListener('click', function(){
+      console.log('s3 捕获')
+    }, true)
+
+  </script>
+</body>
+</html>
