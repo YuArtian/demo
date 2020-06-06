@@ -6,95 +6,38 @@
   <title>Document</title>
 </head>
 <body>
-  <!-- <script>
-    function Parent (name){
-      this.name=name
-      this.age = 1
-    }
-
-    Parent.prototype.getName = function () {
-      console.log('name',this.name)
-      return this.name
-    }
-    Parent.prototype.getAge = function () {
-      console.log('parent age',this.age)
-      return this.age
-    }
-
-    function Child(name, age){
-      Parent.call(this, name)
+  <script>
+    //ES 5
+    function Super(name, age){
+      this.type = 'person'
+      this.name = name
       this.age = age
     }
-    Child.prototype = Object.create(Parent.prototype)
-    Child.prototype.constructor = Child
-
-    Child.prototype.getAge = function () {
-      console.log('child age',this.age)
+    Super.prototype.getName = function(){
+      console.log('get Name', this.name)
+    }
+    Super.prototype.getType = function(){
+      console.log('get super Type', this.type)
+    }
+    Super.prototype.getAge = function(){
+      console.log('get Age', this.age)
     }
 
-    let p = new Parent('parent')
-    p.getAge()
-    let c = new Child('child', 100)
-    c.getAge()
-  </script> -->
-
-  <!-- <script>
-    class Parent {
-      constructor(name){
-        this.name = name
-        this.age = 1
-        this.height = 20
-      }
-      getAge(){
-        console.log('parent age', this.age)
-      }
-      getName(){
-        console.log('name',this.name)
-      }
-      static staticMethod (caller) {
-        console.log(caller,'static method')
-      }
+    function Sub(name, age){
+      Super.call(this, name, age)
+      this.name = name
+      this.age = age
+    }
+    Sub.prototype = Object.create(Super.prototype)
+    Sub.prototype.constructor = Sub
+    Sub.prototype.getType = function(){
+      console.log('get child Type', this.type)
     }
 
-    class Child extends Parent {
-      constructor(name, age) {
-        super(name)
-        this.age = age
-      }
-      getAge(){
-        console.log('child age',this.age)
-      }
-    }
-
-    let p = new Parent('parent name')
-    p.getName()
-    p.getAge()
-    // p.getHeight() Uncaught TypeError: p.getHeight is not a function
-    Parent.staticMethod('parent')
-    let c = new Child('child name', 100)
-    c.getName()
-    c.getAge()
-    Child.staticMethod('child')
-  </script> -->
-
-
-  <script>
-    //test
-    class Parent {
-      constructor(){
-        console.log('Parent constructor',this)
-      }
-    }
-    class Child extends Parent{
-      constructor(){
-        super()
-        console.log('this',this)
-      }
-    }
-
-    let c = new Child()
-    console.log('c',c)
+    let sub = new Sub('child', 18)
+    sub.getType()
+    sub.getName()
+    sub.getAge()
   </script>
-
 </body>
 </html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    //封装全局xhr请求
+    function xhrAdapter(type='GET', url, config={}){
+      if (!url) return
+      return new Promise((reslove, reject) => {
+        let xhr = new XMLHttpRequest()
+        xhr.open(type, url, true)
+        xhr.withCredentials = true
+        xhr.timeout = 3000
+        xhr.ontimeout = function(){
+          console.log('timeout')
+        }
+        xhr.onreadystatechange = () => {
+          if (!xhr || xhr.readyState !== 4) return
+          if(xhr.status === 0) return
+          const respone = {
+            data: xhr.responseText,
+            status: xhr.status,
+            statusText: xhr.statusText
+          }
+          reslove(respone)
+        }
+        xhr.send()
+      })
+    }
+
+    let contorller = new AbortController()
+    let signal = contorller.signal
+
+    //封装全局fetch请求
+    function fetchAdapter(type='GET', url, config={}){
+      if(!url) return
+      const fetchPromise = fetch(url, {
+        signal,
+        type,
+        credentials: 'include',
+        ...config,
+      })
+      let timeoutPromise = new Promise((reslove, reject) => {
+        setTimeout(() => {
+          contorller.abort()
+          reject(new Error('timeout'))
+        }, config.timeout || 3000)
+      })
+
+      return Promise.race(timeoutPromise, fetchPromise)
+      .then(response => {
+        if(response.ok){
+          return response.json()
+        }
+        //网络错误
+        const error = new Error(response.statusText);
+        error.response = response;
+        throw error;
+      })
+      .catch(err => {})
+    }
+
+  </script>
+</body>
+</html>

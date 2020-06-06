@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="oDiv">
+    <ul>
+      <li><a>点击 a 标签</a></li>
+      <li><a>点击 a 标签</a></li>
+      <li><a>点击 a 标签</a></li>
+      <li><a>点击 a 标签</a></li>
+      <li><a>点击 a 标签</a></li>
+      <li><a>点击 a 标签</a></li>
+      <li><a>点击 a 标签</a></li>
+      <li><a>点击 a 标签</a></li>
+      <li><a>点击 a 标签</a></li>
+      <li><a>点击 a 标签</a></li>
+    </ul>
+  </div>
+  <script>
+    let list = document.getElementById('oDiv').getElementsByTagName('a')
+    //代理事件
+    function delegateEvent(interfaceEle, selector, type, callback){
+      if (interfaceEle.addEventListener) {
+        interfaceEle.addEventListener(type, eventCallback)
+      } else {
+        interfaceEle.attachEvent('on'+type, eventCallback)
+      }
+      function eventCallback(e){
+        e = e || window.event
+        let target = e.target || e.srcElement
+        let tagName = target.tagName.toLowerCase()
+        if ((tagName === selector) && callback) {
+          let index = Array.prototype.indexOf.call(list, target)
+          callback.call(target, e, index+1)
+        }
+      }
+    }
+    //调用
+    var odiv = document.getElementById("oDiv");
+    delegateEvent(odiv,"a","click",function(e, index){
+      console.log('第'+index+'个 a 标签的点击事件被代理啦！！！')
+    })
+  </script>
+</body>
+</html>

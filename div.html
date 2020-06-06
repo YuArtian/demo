@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div>
+    <input type="text" name="" id="input" >
+    <div clas="show"></div>
+  </div>
+  <script>
+    function InputComponent(id){
+      let input = document.getElementById('input')
+      let count = 0
+      let result = ''
+      input.addEventListener('input', (e) => {
+        console.log('taget value',e.target.value)
+        console.log('data value',e.data)
+        let data = e.data
+        result += (count === 4 ? '_' + data : data)
+      })
+      return result
+    }
+    InputComponent('input')
+  </script>
+</body>
+</html>
