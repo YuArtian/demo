@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div>
+    <table id="t-head">
+      <colgroup>
+        <col name='1'>
+        <col name='2'>
+        <col name='3'>
+        <col name='4'>
+      </colgroup>
+      <thead>
+        <tr>
+          <th>clomun 1</th>
+          <th>clomun 2</th>
+          <th>clomun 3</th>
+          <th>clomun 4</th>
+        </tr>
+      </thead>
+    </table>
+    <table id="t-body">
+      <colgroup>
+        <col name='1'>
+        <col name='2'>
+        <col name='3'>
+        <col name='4'>
+      </colgroup>
+      <tbody>
+        <tr class="t-body-tr-0">
+          <td class="t-body-td">11</td>
+          <td class="t-body-td">_text__text__text__text__text__text__text__text__text__text__text__text__text_</td>
+          <td class="t-body-td">12</td>
+          <td class="t-body-td">13</td>
+        </tr>
+        <tr class="t-body-tr">
+          <td>21</td>
+          <td>22</td>
+          <td>23</td>
+          <td>_text_</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    td {
+      border: 1px solid #333;
+    }
+  </style>
+  <script>
+    const el = document.querySelectorAll('.t-body-tr-0 td')
+    console.log('el',el)
+    const resizeObserver = new ResizeObserver(entries => {
+      console.log('entries',entries)
+    });
+
+    resizeObserver.observe(el);
+  </script>
+  <script>
+    // const el = document.querySelector('#t-body')
+    // var config = { attributes: true, childList: true, subtree: true };
+
+    // // 当观察到变动时执行的回调函数
+    // var callback = function(mutations) {
+    //     for(var mutation of mutations) {
+    //       console.log('mutation',mutation)
+    //     }
+    // };
+    // var observer = new MutationObserver(callback);
+
+    // // 以上述配置开始观察目标节点
+    // observer.observe(el, config);
+  </script>
+</body>
+
+</html>

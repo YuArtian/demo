@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div class="contain">
+    <div class="border">
+      我要有1px的边框
+    </div>
+    <div class="border">
+      我要有1px的边框
+    </div>
+    <div class="border">
+      我要有1px的边框
+    </div>
+    <div class="border">
+      我要有1px的边框
+    </div>
+  </div>
+  <style>
+    .contain {
+      width: 800px;
+      display: flex;
+    }
+    .border{
+      width: 200px;
+      /* height: 100px; */
+      position: relative;
+    }
+    .border::before {
+      position: absolute;
+      content: '';
+      border: 1px solid #000;
+      top: 0;
+      left: 0;
+      width: 200%;
+      height: 200%;
+      transform: scale(.5);
+      transform-origin: left top;
+      pointer-events: none;
+    }
+  </style>
+</body>
+</html>

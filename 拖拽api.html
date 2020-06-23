@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="draggable" draggable="true">Draggable Div</div>
+<script>
+  var draggableElement = document.getElementById("draggable");
+  draggableElement.addEventListener('dragstart',function(event){
+    console.log("拖动开始！");
+    event.dataTransfer.setData('text','hello world!');
+  })
+</script>
+</body>
+</html>
